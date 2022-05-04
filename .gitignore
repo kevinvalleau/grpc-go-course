@@ -1,4 +1,6 @@
 .DS_Store
+# Don't need the binaries
+bin
 # Binaries for programs and plugins
 *.exe
 *.exe~
