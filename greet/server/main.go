@@ -3,29 +3,32 @@ package main
 import (
 	"log"
 	"net"
+	"time"
 
 	pb "github.com/kevinvalleau/grpc-go-course/greet/proto"
 	"google.golang.org/grpc"
 )
 
+var greetWithDeadlineTime time.Duration = 1 * time.Second
+
 var addr string = "0.0.0.0:50051"
 
 type Server struct {
-    pb.GreetServiceServer
+	pb.GreetServiceServer
 }
 
 func main() {
 	lis, err := net.Listen("tcp", addr)
-    if err != nil {
-        log.Fatalf("Failed to listen on %v\n", err)
-    }
+	if err != nil {
+		log.Fatalf("Failed to listen on %v\n", err)
+	}
 
-    log.Printf("Listening on %s\n", addr)
+	log.Printf("Listening on %s\n", addr)
 
-    s := grpc.NewServer()
-    pb.RegisterGreetServiceServer(s, &Server{})
+	s := grpc.NewServer()
+	pb.RegisterGreetServiceServer(s, &Server{})
 
-    if err = s.Serve(lis); err != nil {
-        log.Fatalf("Failed to serve: %v\n", err)
-    }
+	if err = s.Serve(lis); err != nil {
+		log.Fatalf("Failed to serve: %v\n", err)
+	}
 }
